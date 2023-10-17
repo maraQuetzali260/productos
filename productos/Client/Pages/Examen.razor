@@ -1,0 +1,82 @@
+﻿@page "/examen"
+<h3>Productos</h3>
+
+
+
+<EditForm Model=producto OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="txtInventario" class="form-label">Inventario</label>
+        <div class="col-sm-10">
+            <InputNumber id="txtNombre" class="form-control" @bind-Value="producto.Inventario"></InputNumber>
+            <ValidationMessage For="@(() => producto.Inventario)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="txtNombre" class="form-label">Nombre</label>
+        <div class="col-sm-10">
+            <InputText id="txtTelefono" class="form-control" @bind-Value="producto.Nombre"></InputText>
+            <ValidationMessage For="@(() => producto.Nombre)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="txtDepartamento" class="form-label">Departamento</label>
+        <div class="col-sm-10">
+            <input class="form-check-input" type="radio" name="flexRadioDefault1" id="frutas" @bind="departament1" >Frutas
+            <input class="form-check-input" type="radio" name="flexRadioDefault2" id="verduras" @bind="departament2">Verduras
+            <input class="form-check-input" type="radio" name="flexRadioDefault3" id="lácteos" @bind="departament3">Lácteos
+            <InputRadio id="txtDepartamento" class="form-control" @bind-Value="producto.Departamento"></InputRadio>
+            <ValidationMessage For="@(() => producto.Departamento)" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+</EditForm>
+
+
+@if (productoss.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Inventario</th>
+                <th>Nombre</th>
+                <th>Departamento</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Productos elproducto in productoss)
+            {
+                <tr>
+                    <td>@elproducto.Inventario</td>
+                    <td>@elproducto.Nombre</td>
+                    <td>@elproducto.Departamento</td>
+                    <td><span class="oi oi-trash" aria-hidden="true" @onclick="()=>Eliminar(elproducto)"></span></td>
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
+
+}
+
+
+
+@code {
+    private Productos producto = new Productos();
+    private List<Productos> productoss = new List<Productos>();
+    private string? departament1;
+    private string? departament2;
+    private string? departament3;
+    private void Guardar()
+    {
+        productoss.Add(producto);
+        producto = new Productos();
+    }
+    private void Eliminar(Productos producto)
+    { 
+        productoss.Remove(producto); 
+    }
+}
